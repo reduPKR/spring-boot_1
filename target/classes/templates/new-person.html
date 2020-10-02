@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Pessoa</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Pessoa</h1>
+        <form th:action="@{/pessoa}" th:object="${person}" method="post">
+            <input type="text" name="name" th:field="*{name}" th:placeholder="Nome"/> <br/>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
+            <br/>
+
+            <input type="text" name="lastName" th:field="*{lastName}" th:placeholder="Sobrenome"/> <br/>
+            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">LastName Error</span>
+            <br/>
+            
+            <input type="text" name="age" th:field="*{age}" th:placeholder="Idade"/> <br/>
+            <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">LastName Error</span>
+            <br/>
+            <button type="submit">Confirmar</button>
+        </form> 
+        <br>
+        <a th:href="@{/pessoa}">Novo</a>
+    </body>
+</html>
