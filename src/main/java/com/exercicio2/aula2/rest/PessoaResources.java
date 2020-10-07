@@ -1,24 +1,26 @@
 package com.exercicio2.aula2.rest;
 
+import com.exercicio2.aula2.Services.Services;
 import com.exercicio2.aula2.model.Person;
 import com.exercicio2.aula2.repository.PersonRepository;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PessoaResources {
     @Autowired
-    private PersonRepository repository;
+    private Services service;
     
     @GetMapping("/api")
     public String get(){
@@ -27,16 +29,13 @@ public class PessoaResources {
     
     @GetMapping("/api/pessoa")
     public ArrayList<Person> getAll(){
-        return repository.getAll();
+        return service.getAll();
     }
     
     @GetMapping("/api/pessoa/{id}")
     public ResponseEntity<Person> getById(@PathVariable("id") int id){
-        final Optional<Person> p = repository.getById(id);
-        if(p.isPresent()){
-            return ResponseEntity.ok(p.get());
-        }
-        return ResponseEntity.notFound().build();
+        Person p = service.getById(id);
+        return ResponseEntity.ok(p);
     }
     
     /**
@@ -46,7 +45,7 @@ public class PessoaResources {
      */
     @PostMapping("/api/pessoa")
     public Person create(@RequestBody Person p){
-        return repository.add(p);
+        return service.add(p);
     }
     
     /**
@@ -57,22 +56,15 @@ public class PessoaResources {
      */
     @PutMapping("/api/pessoa/{id}")
     public ResponseEntity<Person> update(@RequestBody Person p, @PathVariable("id") int id){   
-        Person person = repository.update(id,p);
-        
-        if(person != null){
-            return ResponseEntity.ok(person);
-        }else{
-            return ResponseEntity.notFound().build();
-        }
+        Person person = service.update(id,p);
+        return ResponseEntity.ok(person);
     }
     
     @DeleteMapping("/api/pessoa/{id}")
-    public ResponseEntity<Person> delete(@PathVariable("id") int id){
-        Optional<Person> p = repository.getById(id);
-        if(p.isPresent()){
-            repository.delete(p.get());
-            return ResponseEntity.noContent().build();
-        }else
-            return ResponseEntity.notFound().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") int id){
+        service.delete(id);
     }
+    
+    
 }
