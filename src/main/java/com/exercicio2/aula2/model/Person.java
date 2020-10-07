@@ -1,6 +1,7 @@
 package com.exercicio2.aula2.model;
 
 public class Person {
+    private int id;
     private String name;
     private String lastName;
     private int age;
@@ -12,6 +13,21 @@ public class Person {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
+    }
+
+    public Person(int id, String name, String lastName, int age) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,4 +53,6 @@ public class Person {
     public void setAge(int age) {
         this.age = age;
     }
+
+   
 }
